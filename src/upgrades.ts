@@ -1,4 +1,8 @@
 import { getScrap, modifyClickHarvestAmount, modifyScrap } from "./main.ts";
+import {
+  getRobotPluralName,
+  multiplyRobotHarvestMultiplier,
+} from "./robots.ts";
 
 interface UpgradeType {
   name: string;
@@ -8,8 +12,10 @@ interface UpgradeType {
 }
 
 interface UpgradeEffect {
-  type: "addToClickHarvest"; // use "|" to add more types
+  type: "addToClickHarvest" | "multiplyRobotHarvestMultiplier"; // use "|" to add more types
   value: number;
+  // Unused for addToClickHarvest
+  index: number;
 }
 
 interface UpgradeData {
@@ -23,25 +29,41 @@ const upgradeTypes: UpgradeType[] = [
   {
     name: "Moon Research Station",
     description: "Gather throwaway scrap from researchers on a remote moon.",
-    cost: 30,
+    cost: 40,
     effects: [
-      { type: "addToClickHarvest", value: 1 },
+      { type: "addToClickHarvest", value: 1, index: 0 },
     ],
   },
   {
     name: "Giant Furnace",
     description: "Melt down scrap at a speedier rate.",
-    cost: 100,
+    cost: 125,
     effects: [
-      { type: "addToClickHarvest", value: 4 },
+      { type: "addToClickHarvest", value: 4, index: 0 },
+    ],
+  },
+  {
+    name: "De-rusting",
+    description: "Clean up the rust on your scrap robots.",
+    cost: 200,
+    effects: [
+      { type: "multiplyRobotHarvestMultiplier", value: 2, index: 0 },
     ],
   },
   {
     name: "Space Highways",
     description: "Collect trash space citizens throw out of their hovercars.",
-    cost: 200,
+    cost: 300,
     effects: [
-      { type: "addToClickHarvest", value: 4 },
+      { type: "addToClickHarvest", value: 4, index: 0 },
+    ],
+  },
+  {
+    name: "Joint Greasing",
+    description: "Make your steel robots move with most elegance.",
+    cost: 500,
+    effects: [
+      { type: "multiplyRobotHarvestMultiplier", value: 2, index: 1 },
     ],
   },
 ];
@@ -70,6 +92,11 @@ export function setupUpgrades() {
     for (const effect of upgradeType.effects) {
       if (effect.type === "addToClickHarvest") {
         effectsText += "Increases click harvest by " + effect.value.toString() +
+          ".\n";
+      } else if (effect.type === "multiplyRobotHarvestMultiplier") {
+        effectsText += "Multiplies harvest of " +
+          getRobotPluralName(effect.index) +
+          " by " + effect.value.toString() +
           ".\n";
       }
     }
@@ -128,6 +155,8 @@ function buyUpgrade(upgradeType: UpgradeType, upgradeData: UpgradeData) {
   for (const effect of upgradeType.effects) {
     if (effect.type === "addToClickHarvest") {
       modifyClickHarvestAmount(effect.value);
+    } else if (effect.type === "multiplyRobotHarvestMultiplier") {
+      multiplyRobotHarvestMultiplier(effect.index, effect.value);
     }
   }
 

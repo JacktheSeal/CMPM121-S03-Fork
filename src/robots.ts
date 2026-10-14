@@ -1,13 +1,15 @@
 import { getScrap, modifyScrap } from "./main.ts";
 
 interface RobotType {
-  name: string;
+  singularName: string;
+  pluralName: string;
   harvestAmount: number;
   costFunction: (numRobots: number) => number;
 }
 
 interface RobotData {
   numRobots: number;
+  harvestMultiplier: number;
   countElement: HTMLElement;
   harvestElement: HTMLElement;
   costElement: HTMLElement;
@@ -16,8 +18,18 @@ interface RobotData {
 
 // Data Driven Config
 const robotTypes: RobotType[] = [
-  { name: "Scrap Robot", harvestAmount: 1, costFunction: getScrapRobotCost },
-  { name: "Steel Robot", harvestAmount: 5, costFunction: getSteelRobotCost },
+  {
+    singularName: "Scrap Robot",
+    pluralName: "Scrap Robots",
+    harvestAmount: 1,
+    costFunction: getScrapRobotCost,
+  },
+  {
+    singularName: "Steel Robot",
+    pluralName: "Steel Robots",
+    harvestAmount: 5,
+    costFunction: getSteelRobotCost,
+  },
 ];
 
 function getScrapRobotCost(numRobots: number): number {
@@ -51,11 +63,12 @@ export function setupRobots() {
     divElement.append(costElement);
 
     const buyButton = document.createElement("button");
-    buyButton.textContent = "Buy " + robotType.name;
+    buyButton.textContent = "Buy " + robotType.singularName;
     divElement.append(buyButton);
 
     const finalRobotData: RobotData = {
       numRobots: 0,
+      harvestMultiplier: 1,
       countElement: countElement,
       harvestElement: harvestElement,
       costElement: costElement,
@@ -80,7 +93,7 @@ export function updateRobots(deltaTime: number): number {
     for (const [index, robotType] of robotTypes.entries()) {
       const harvest: number = getRobotHarvest(
         robotType,
-        robotData[index].numRobots,
+        robotData[index],
       );
       scrapHarvest += harvest;
 
@@ -93,6 +106,18 @@ export function updateRobots(deltaTime: number): number {
   return scrapHarvest;
 }
 
+export function getRobotPluralName(robotIndex: number): string {
+  return robotTypes[robotIndex].pluralName;
+}
+
+export function multiplyRobotHarvestMultiplier(
+  robotIndex: number,
+  multiplier: number,
+) {
+  robotData[robotIndex].harvestMultiplier *= multiplier;
+  updateRobotElements(robotTypes[robotIndex], robotData[robotIndex]);
+}
+
 export function updateAllRobotElements() {
   for (const [index, robotType] of robotTypes.entries()) {
     updateRobotElements(robotType, robotData[index]);
@@ -100,13 +125,10 @@ export function updateAllRobotElements() {
 }
 
 function updateRobotElements(robotType: RobotType, robotData: RobotData) {
-  robotData.countElement.textContent = robotType.name + "s: " +
+  robotData.countElement.textContent = robotType.pluralName + ": " +
     robotData.numRobots;
 
-  const robotHarvest: number = getRobotHarvest(
-    robotType,
-    robotData.numRobots,
-  );
+  const robotHarvest: number = getRobotHarvest(robotType, robotData);
   robotData.harvestElement.textContent = "Harvesting " +
     robotHarvest.toString() + " scrap every 5 seconds";
 
@@ -128,6 +150,7 @@ function buyRobot(robotType: RobotType, robotData: RobotData) {
   }
 }
 
-function getRobotHarvest(robotType: RobotType, numRobots: number): number {
-  return robotType.harvestAmount * numRobots;
+function getRobotHarvest(robotType: RobotType, robotData: RobotData): number {
+  return robotType.harvestAmount * robotData.harvestMultiplier *
+    robotData.numRobots;
 }
