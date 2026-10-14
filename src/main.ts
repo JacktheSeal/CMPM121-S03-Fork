@@ -15,10 +15,15 @@ interface RobotData {
 // Data Driven Config
 const robotTypes: RobotType[] = [
   { name: "Scrap Robot", harvestAmount: 1, costFunction: getScrapRobotCost },
+  { name: "Steel Robot", harvestAmount: 5, costFunction: getSteelRobotCost },
 ];
 
 function getScrapRobotCost(numRobots: number): number {
   return Math.ceil(10 * 1.15 ** numRobots);
+}
+
+function getSteelRobotCost(numRobots: number): number {
+  return Math.ceil(40 * 1.16 ** numRobots);
 }
 
 // Dynamic Variables
