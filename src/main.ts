@@ -89,19 +89,28 @@ button.addEventListener("click", () => {
 });
 
 // let robots: number = 1;
-const robots: number = 1;
+const robots: number = 1; //after enable purchase change to let
 let timer: number = 0;
 let autoScrap: number = 0;
 
-setInterval(() => {
-  timer += robots;
+let lastTime = performance.now();
 
-  if (timer >= 60) {
+function update(currentTime: number) {
+  const deltaTime = (currentTime - lastTime) / 1000;
+  lastTime = currentTime;
+
+  timer += robots * deltaTime;
+
+  while (timer >= 60) {
     scrap++;
     timer -= 60;
     scrapElement.textContent = scrap.toString();
+
     autoScrap++;
+    console.log("Total auto harvested scrap:", autoScrap);
   }
 
-  console.log("Total auto harvested scrap:", autoScrap);
-}, 1000);
+  requestAnimationFrame(update);
+}
+
+requestAnimationFrame(update);
