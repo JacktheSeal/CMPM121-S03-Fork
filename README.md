@@ -5,3 +5,29 @@ A minimal TypeScript/Vite browser project with Deno checks and GitHub Pages depl
 ## Credits
 
 Tooling adapted from the [CMPM 121 Fall 2026 S01 starter](https://github.com/ucsc-cmpm-121-f26/s01-starter/tree/8974888efb6537be82e8eb069db139ea885039da), which has no explicit repository license. No new license is assigned to that material. The D1 scaffold and original SVG were authored with OpenAI GPT-6 Astra assistance. Dependencies retain their respective licenses.
+
+## Project Handoff
+
+App link: https://lzhu73.github.io/CMPM121-D01/
+
+To run:
+Install Deno and run command in project directory:
+deno task setup
+deno task dev
+
+To play:
+Click Harvest Scrap to collect scrap.
+Buy different robots to increase automatic production.
+Buy upgrades to increase scrap earned per click or upgrade on robots.
+Upgrade prices increase as you purchase more of them.
+
+## Developer Handoff
+
+Code structure:
+main.ts — Handles scrap and the game loop
+robots.ts — Robot purchases and auto harvesting
+upgrades.ts — Upgrades and effects
+styles.css — UI styles
+
+Data Driven design:
+Robots and upgrades are all stored in arrays. The same functions handles purchasing and updating, this allows us to add new items without rewriting functions or have to write a new function.
