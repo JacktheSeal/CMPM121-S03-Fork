@@ -18,6 +18,19 @@ body {
   min-height: 300px;
 }
 
+#app > h1 {
+  font-size: 48px;
+}
+
+#scrap {
+  font-size: 40px;
+}
+
+#harvest {
+  font-size: 28px;
+  padding: 50px 65px;
+}
+
 .storeContainer {
   width: fit-content;
   padding: 5%;
@@ -53,4 +66,24 @@ button:enabled:hover {
   color: black;
   background-image: repeating-linear-gradient(45deg, transparent, rgb(155, 155,
     155) 25%);
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+}
+
+.shake {
+  animation: shake 0.2s;
 }

@@ -9,10 +9,15 @@ let lastTime = performance.now();
 // HTML Variables
 const harvestButton = document.getElementById("harvest")!;
 const scrapElement = document.getElementById("scrap")!;
+const scrapPerClickElement = document.getElementById("scrapPerClick")!;
 
 function setupHtmlElements() {
   harvestButton.addEventListener("click", () => {
     modifyScrap(clickHarvestAmount);
+
+    harvestButton.classList.remove("shake");
+    void harvestButton.offsetWidth;
+    harvestButton.classList.add("shake");
   });
 
   setupRobots();
@@ -49,6 +54,7 @@ export function modifyClickHarvestAmount(amount: number) {
   }
 
   clickHarvestAmount += amount;
+  scrapPerClickElement.textContent = clickHarvestAmount.toString();
 }
 
 function updateHarvestElements() {
