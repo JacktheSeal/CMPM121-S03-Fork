@@ -28,18 +28,30 @@ document.body.innerHTML = `
     body {
       color: black;
       text-align: center;
-      font-family: Arial, sans-serif;
-      padding-top: 80px;
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+      margin: 40px;
+    }
+
+    .column {
+      flex: 1;
+      padding: 30px;
+      border-radius: 15px;
+      min-height: 300px;
     }
 
     button {
       font-size: 24px;
-      padding: 40px 60px;
+      padding: 40px 50px;
       background-color: navy;
       color: white;
       border: none;
       border-radius: 20px;
       cursor: pointer;
+      max-width: 100%;
     }
 
     button:hover {
@@ -48,8 +60,24 @@ document.body.innerHTML = `
   </style>
 
   <h1>Space Scrap Harvester</h1>
-  <h2>Scrap: <span id="scrap">0</span></h2>
-  <button id="harvest">Harvest Scrap</button>
+
+  <div class="container">
+    <div class="column">
+      <h2>Harvest</h2>
+      <h2>Scrap: <span id="scrap">0</span></h2>
+      <button id="harvest">Harvest Scrap</button>
+    </div>
+
+    <div class="column">
+      <h2>Robots</h2>
+      <h2><span id="robots">1</span></h2>
+      <p>Auto harvesting every minute</p>
+    </div>
+
+    <div class="column">
+      <h2>Upgrades</h2>
+    </div>
+  </div>
 `;
 
 const button = document.getElementById("harvest")!;
@@ -59,3 +87,21 @@ button.addEventListener("click", () => {
   scrap++;
   scrapElement.textContent = scrap.toString();
 });
+
+// let robots: number = 1;
+const robots: number = 1;
+let timer: number = 0;
+let autoScrap: number = 0;
+
+setInterval(() => {
+  timer += robots;
+
+  if (timer >= 60) {
+    scrap++;
+    timer -= 60;
+    scrapElement.textContent = scrap.toString();
+    autoScrap++;
+  }
+
+  console.log("Total auto harvested scrap:", autoScrap);
+}, 1000);
