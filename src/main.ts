@@ -25,8 +25,11 @@ app.append(heading, image, message);
 let scrap: number = 0;
 let robotTimer: number = 0;
 let lastTime = performance.now();
-// let robots: number = 1;
-const robots: number = 1; //after enable purchase change to let
+let robots: number = 1;
+// const robots: number = 1; //after enable purchase change to let
+let autoScrap: number = 0; //for console
+const robotElement = document.getElementById("robots")!;
+const robotCostElement = document.getElementById("robotCost")!;
 
 // HTML Variables
 const button = document.getElementById("harvest")!;
@@ -43,16 +46,39 @@ function update(currentTime: number) {
   const deltaTime = (currentTime - lastTime) / 1000;
   lastTime = currentTime;
 
-  robotTimer += robots * deltaTime;
+  robotTimer += deltaTime;
 
+  // every 5 sec produce 1 * robotCount scrap
   while (robotTimer >= 5) {
-    scrap++;
+    scrap += robots;
     robotTimer -= 5;
     scrapElement.textContent = scrap.toString();
+
+    autoScrap += robots;
+    console.log("Total auto harvested scrap:", autoScrap);
   }
 
   requestAnimationFrame(update);
 }
 
+// helper for robot price
+function getRobotCost(): number {
+  return Math.ceil(10 * 1.15 ** (robots - 1));
+}
+
+function buyRobot() {
+  const cost = getRobotCost();
+
+  if (scrap >= cost) {
+    scrap -= cost;
+    robots++;
+
+    scrapElement.textContent = scrap.toString();
+    robotElement.textContent = robots.toString();
+    robotCostElement.textContent = getRobotCost().toString();
+  }
+}
+
 setupHtmlElements();
+document.getElementById("buyRobot")!.addEventListener("click", buyRobot);
 requestAnimationFrame(update);
