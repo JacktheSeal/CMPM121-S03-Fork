@@ -4,15 +4,16 @@
 let scrap: number = 0;
 let robotTimer: number = 0;
 let lastTime = performance.now();
-let robots: number = 1;
+let scrapRobots: number = 0;
 let autoScrap: number = 0; //for console
 
 // HTML Variables
 const harvestButton = document.getElementById("harvest")!;
 const scrapElement = document.getElementById("scrap")!;
-const robotElement = document.getElementById("robots")!;
-const robotCostElement = document.getElementById("robotCost")!;
-const buyRobotButton = document.getElementById("buyRobot")!;
+const scrapRobotCountElement = document.getElementById("scrapRobotCount")!;
+const scrapRobotHarvestElement = document.getElementById("scrapRobotHarvest")!;
+const scrapRobotCostElement = document.getElementById("scrapRobotCost")!;
+const scrapRobotButton = document.getElementById("scrapRobotButton")!;
 
 function setupHtmlElements() {
   harvestButton.addEventListener("click", () => {
@@ -20,7 +21,7 @@ function setupHtmlElements() {
     updateHarvestElements();
   });
 
-  buyRobotButton.addEventListener("click", buyRobot);
+  scrapRobotButton.addEventListener("click", buyRobot);
 
   updateHarvestElements();
   updateRobotElements();
@@ -32,13 +33,13 @@ function update(currentTime: number) {
 
   robotTimer += deltaTime;
 
-  // every 5 sec produce 1 * robotCount scrap
+  // Every 5 sec produce 1 * robotCount scrap
   while (robotTimer >= 5) {
-    scrap += robots;
+    scrap += scrapRobots;
     robotTimer -= 5;
     updateHarvestElements();
 
-    autoScrap += robots;
+    autoScrap += scrapRobots;
     console.log("Total auto harvested scrap:", autoScrap);
   }
 
@@ -46,16 +47,16 @@ function update(currentTime: number) {
 }
 
 // Helper for robot price
-function getRobotCost(): number {
-  return Math.ceil(10 * 1.15 ** (robots - 1));
+function getScrapRobotCost(): number {
+  return Math.ceil(10 * 1.15 ** scrapRobots);
 }
 
 function buyRobot() {
-  const cost = getRobotCost();
+  const cost = getScrapRobotCost();
 
   if (scrap >= cost) {
     scrap -= cost;
-    robots++;
+    scrapRobots++;
 
     updateHarvestElements();
     updateRobotElements();
@@ -67,8 +68,9 @@ function updateHarvestElements() {
 }
 
 function updateRobotElements() {
-  robotElement.textContent = robots.toString();
-  robotCostElement.textContent = getRobotCost().toString();
+  scrapRobotCountElement.textContent = scrapRobots.toString();
+  scrapRobotHarvestElement.textContent = scrapRobots.toString();
+  scrapRobotCostElement.textContent = getScrapRobotCost().toString();
 }
 
 setupHtmlElements();
