@@ -17,10 +17,13 @@ const buyRobotButton = document.getElementById("buyRobot")!;
 function setupHtmlElements() {
   harvestButton.addEventListener("click", () => {
     scrap++;
-    scrapElement.textContent = scrap.toString();
+    updateHarvestElements();
   });
 
   buyRobotButton.addEventListener("click", buyRobot);
+
+  updateHarvestElements();
+  updateRobotElements();
 }
 
 function update(currentTime: number) {
@@ -33,7 +36,7 @@ function update(currentTime: number) {
   while (robotTimer >= 5) {
     scrap += robots;
     robotTimer -= 5;
-    scrapElement.textContent = scrap.toString();
+    updateHarvestElements();
 
     autoScrap += robots;
     console.log("Total auto harvested scrap:", autoScrap);
@@ -54,10 +57,18 @@ function buyRobot() {
     scrap -= cost;
     robots++;
 
-    scrapElement.textContent = scrap.toString();
-    robotElement.textContent = robots.toString();
-    robotCostElement.textContent = getRobotCost().toString();
+    updateHarvestElements();
+    updateRobotElements();
   }
+}
+
+function updateHarvestElements() {
+  scrapElement.textContent = scrap.toString();
+}
+
+function updateRobotElements() {
+  robotElement.textContent = robots.toString();
+  robotCostElement.textContent = getRobotCost().toString();
 }
 
 setupHtmlElements();
