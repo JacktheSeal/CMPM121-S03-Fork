@@ -66,6 +66,14 @@ const upgradeTypes: UpgradeType[] = [
       { type: "multiplyRobotHarvestMultiplier", value: 2, index: 1 },
     ],
   },
+  {
+    name: "Shiny Polish",
+    description: "Improve the morale of your titanium robots tenfold!",
+    cost: 1000,
+    effects: [
+      { type: "multiplyRobotHarvestMultiplier", value: 2, index: 2 },
+    ],
+  },
 ];
 
 // Dynamic Variables
@@ -123,26 +131,27 @@ export function setupUpgrades() {
     );
 
     upgradeColumn.append(divElement);
-    updateUpgradeElements(upgradeType, finalUpgradeData);
   }
+  updateAllUpgradeElements();
 }
 
 export function updateAllUpgradeElements() {
+  let numBought: number = 0;
   for (const [index, upgradeType] of upgradeTypes.entries()) {
-    updateUpgradeElements(upgradeType, upgradeData[index]);
-  }
-}
+    if (upgradeData[index].bought) {
+      numBought++;
+      upgradeData[index].elementContainer.remove();
+      continue;
+    }
 
-function updateUpgradeElements(
-  upgradeType: UpgradeType,
-  upgradeData: UpgradeData,
-) {
-  if (upgradeData.bought) {
-    upgradeData.elementContainer.remove();
-    return;
-  }
+    if (index - numBought >= 3) {
+      upgradeData[index].elementContainer.style.display = "none";
+      continue;
+    }
 
-  upgradeData.buyButton.disabled = getScrap() < upgradeType.cost;
+    upgradeData[index].elementContainer.style.display = "";
+    upgradeData[index].buyButton.disabled = getScrap() < upgradeType.cost;
+  }
 }
 
 function buyUpgrade(upgradeType: UpgradeType, upgradeData: UpgradeData) {
@@ -161,5 +170,5 @@ function buyUpgrade(upgradeType: UpgradeType, upgradeData: UpgradeData) {
   }
 
   upgradeData.bought = true;
-  updateUpgradeElements(upgradeType, upgradeData);
+  updateAllUpgradeElements();
 }
