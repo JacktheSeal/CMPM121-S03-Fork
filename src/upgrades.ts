@@ -26,20 +26,23 @@ const upgradeTypes: UpgradeType[] = [
     cost: 30,
     effects: [
       { type: "addToClickHarvest", value: 1 },
-      { type: "addToClickHarvest", value: 1 },
     ],
   },
   {
     name: "Giant Furnace",
     description: "Melt down scrap at a speedier rate.",
     cost: 100,
-    effects: [{ type: "addToClickHarvest", value: 4 }],
+    effects: [
+      { type: "addToClickHarvest", value: 4 },
+    ],
   },
   {
     name: "Space Highways",
     description: "Collect trash space citizens throw out of their hovercars.",
     cost: 200,
-    effects: [{ type: "addToClickHarvest", value: 4 }],
+    effects: [
+      { type: "addToClickHarvest", value: 4 },
+    ],
   },
 ];
 
