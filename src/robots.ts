@@ -11,7 +11,7 @@ interface RobotData {
   countElement: HTMLElement;
   harvestElement: HTMLElement;
   costElement: HTMLElement;
-  buyButton: HTMLElement;
+  buyButton: HTMLButtonElement;
 }
 
 // Data Driven Config
@@ -92,14 +92,9 @@ export function updateRobots(deltaTime: number): number {
   return scrapHarvest;
 }
 
-function buyRobot(robotType: RobotType, robotData: RobotData) {
-  const robotCost: number = robotType.costFunction(robotData.numRobots);
-
-  if (getScrap() >= robotCost) {
-    modifyScrap(-1 * robotCost);
-    robotData.numRobots++;
-
-    updateRobotElements(robotType, robotData);
+export function updateAllRobotElements() {
+  for (const [index, robotType] of robotTypes.entries()) {
+    updateRobotElements(robotType, robotData[index]);
   }
 }
 
@@ -117,6 +112,19 @@ function updateRobotElements(robotType: RobotType, robotData: RobotData) {
   const robotCost: number = robotType.costFunction(robotData.numRobots);
   robotData.costElement.textContent = "Cost: " + robotCost.toString() +
     " Scrap";
+
+  robotData.buyButton.disabled = getScrap() < robotCost;
+}
+
+function buyRobot(robotType: RobotType, robotData: RobotData) {
+  const robotCost: number = robotType.costFunction(robotData.numRobots);
+
+  if (getScrap() >= robotCost) {
+    modifyScrap(-1 * robotCost);
+    robotData.numRobots++;
+
+    updateRobotElements(robotType, robotData);
+  }
 }
 
 function getRobotHarvest(robotType: RobotType, numRobots: number): number {

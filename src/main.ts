@@ -1,4 +1,4 @@
-import { setupRobots, updateRobots } from "./robots.ts";
+import { setupRobots, updateAllRobotElements, updateRobots } from "./robots.ts";
 
 // Dynamic Variables
 let scrap: number = 0;
@@ -32,6 +32,7 @@ export function modifyScrap(amount: number) {
 
   scrap += amount;
   updateHarvestElements();
+  updateAllRobotElements();
 }
 
 export function getScrap(): number {
