@@ -16,18 +16,25 @@ deno task setup
 deno task dev
 
 To play:
-Click Harvest Scrap to collect scrap.
-Buy different robots to increase automatic production.
-Buy upgrades to increase scrap earned per click or upgrade on robots.
-Upgrade prices increase as you purchase more of them.
+Click "Harvest Scrap" to collect scrap.
+Buy different robots to increase automatic scrap production.
+Buy upgrades to increase scrap earned per click or increase robot scraps harvested.
+Robot prices increase as you purchase more of them, and later upgrades cost more.
 
 ## Developer Handoff
 
 Code structure:
 main.ts — Handles scrap and the game loop
 robots.ts — Robot purchases and auto harvesting
-upgrades.ts — Upgrades and effects
-styles.css — UI styles
+upgrades.ts — Upgrade purchases and their effects
+styles.css — UI style
 
 Data Driven design:
-Robots and upgrades are all stored in arrays. The same functions handles purchasing and updating, this allows us to add new items without rewriting functions or have to write a new function.
+Robots and upgrades are all stored in object arrays. The same functions handles purchasing and updating for all robot and upgrade types, this allows us to add new items without rewriting functions or adding new variables.
+
+Major Features + Refactors:
+
+- https://github.com/lzhu73/CMPM121-D01/commit/9ce75acdec9720112a5fdd6e28a8d7fcea02ec19
+- Changed the old robot code to use a data driven design, which allowed for more types to be easily added.
+- https://github.com/lzhu73/CMPM121-D01/commit/eed738798dd10703cb093870bd5c99cb5823f56d
+- Added upgrades, refactored harvesting to use a dynamic value instead of always giving one scrap.
