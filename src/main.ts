@@ -21,39 +21,38 @@ message.textContent = "Your project starts here.";
 app.append(heading, image, message);
 */
 
+// Dynamic Variables
 let scrap: number = 0;
+let robotTimer: number = 0;
+let lastTime = performance.now();
+// let robots: number = 1;
+const robots: number = 1; //after enable purchase change to let
 
+// HTML Variables
 const button = document.getElementById("harvest")!;
 const scrapElement = document.getElementById("scrap")!;
 
-button.addEventListener("click", () => {
-  scrap++;
-  scrapElement.textContent = scrap.toString();
-});
-
-// let robots: number = 1;
-const robots: number = 1; //after enable purchase change to let
-let timer: number = 0;
-let autoScrap: number = 0;
-
-let lastTime = performance.now();
+function setupHtmlElements() {
+  button.addEventListener("click", () => {
+    scrap++;
+    scrapElement.textContent = scrap.toString();
+  });
+}
 
 function update(currentTime: number) {
   const deltaTime = (currentTime - lastTime) / 1000;
   lastTime = currentTime;
 
-  timer += robots * deltaTime;
+  robotTimer += robots * deltaTime;
 
-  while (timer >= 60) {
+  while (robotTimer >= 5) {
     scrap++;
-    timer -= 60;
+    robotTimer -= 5;
     scrapElement.textContent = scrap.toString();
-
-    autoScrap++;
-    console.log("Total auto harvested scrap:", autoScrap);
   }
 
   requestAnimationFrame(update);
 }
 
+setupHtmlElements();
 requestAnimationFrame(update);
