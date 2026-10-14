@@ -1,7 +1,9 @@
 import { setupRobots, updateAllRobotElements, updateRobots } from "./robots.ts";
+import { setupUpgrades, updateAllUpgradeElements } from "./upgrades.ts";
 
 // Dynamic Variables
 let scrap: number = 0;
+let clickHarvestAmount: number = 1;
 let lastTime = performance.now();
 
 // HTML Variables
@@ -10,10 +12,11 @@ const scrapElement = document.getElementById("scrap")!;
 
 function setupHtmlElements() {
   harvestButton.addEventListener("click", () => {
-    modifyScrap(1);
+    modifyScrap(clickHarvestAmount);
   });
 
   setupRobots();
+  setupUpgrades();
 }
 
 function update(currentTime: number) {
@@ -33,10 +36,19 @@ export function modifyScrap(amount: number) {
   scrap += amount;
   updateHarvestElements();
   updateAllRobotElements();
+  updateAllUpgradeElements();
 }
 
 export function getScrap(): number {
   return scrap;
+}
+
+export function modifyClickHarvestAmount(amount: number) {
+  if (amount == 0) {
+    return;
+  }
+
+  clickHarvestAmount += amount;
 }
 
 function updateHarvestElements() {

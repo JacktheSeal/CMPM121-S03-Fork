@@ -39,6 +39,7 @@ const robotColumn = document.getElementById("robotColumn")!;
 export function setupRobots() {
   for (const robotType of robotTypes) {
     const divElement = document.createElement("div");
+    divElement.className = "storeContainer";
 
     const countElement = document.createElement("h2");
     divElement.append(countElement);
