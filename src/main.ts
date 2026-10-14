@@ -23,63 +23,6 @@ app.append(heading, image, message);
 
 let scrap: number = 0;
 
-document.body.innerHTML = `
-  <style>
-    body {
-      color: black;
-      text-align: center;
-    }
-
-    .container {
-      display: flex;
-      gap: 20px;
-      margin: 40px;
-    }
-
-    .column {
-      flex: 1;
-      padding: 30px;
-      border-radius: 15px;
-      min-height: 300px;
-    }
-
-    button {
-      font-size: 24px;
-      padding: 40px 50px;
-      background-color: navy;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      max-width: 100%;
-    }
-
-    button:hover {
-      background-color: dodgerblue;
-    }
-  </style>
-
-  <h1>Space Scrap Harvester</h1>
-
-  <div class="container">
-    <div class="column">
-      <h2>Harvest</h2>
-      <h2>Scrap: <span id="scrap">0</span></h2>
-      <button id="harvest">Harvest Scrap</button>
-    </div>
-
-    <div class="column">
-      <h2>Robots</h2>
-      <h2><span id="robots">1</span></h2>
-      <p>Auto harvesting every minute</p>
-    </div>
-
-    <div class="column">
-      <h2>Upgrades</h2>
-    </div>
-  </div>
-`;
-
 const button = document.getElementById("harvest")!;
 const scrapElement = document.getElementById("scrap")!;
 
